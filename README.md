@@ -40,3 +40,9 @@ $ vim .flaskenv
 
     FLASK_APP=mycroblog.py
 ```
+
+## Instalando a extensão Flask-WTF (Formulário)
+
+```zsh
+$ pip3 install flask-wtf
+```
