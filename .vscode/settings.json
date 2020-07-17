@@ -4,6 +4,7 @@
         ".vscode/": true,
         "venv/": true,
         "**/__pycache__/": true,
+		"*.db": true,
 		".directory": true
     }
 }
