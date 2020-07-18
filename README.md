@@ -82,3 +82,15 @@ $ flask db upgrade
 ```zsh
 $ flask shell
 ```
+
+## Instalando a extensão Flask-Login (gerenciar usuários)
+
+```zsh
+$ pip3 install flask-login
+```
+
+## Instalando validador de email (WTFroms)
+
+```zsh
+$ pip3 install email-validator
+```
