@@ -112,3 +112,9 @@ $ pip3 install pyjwt
 ```zsh
 $ pip3 install flask-bootstrap
 ```
+
+## Instalando a extensão Flask-Moment (Tratamento Data - Moment.js)
+
+```zsh
+pip3 install flask-moment
+```
