@@ -94,3 +94,15 @@ $ pip3 install flask-login
 ```zsh
 $ pip3 install email-validator
 ```
+
+## Instalando a extensão Flask-Mail
+
+```zsh
+$ pip3 install flask-mail
+```
+
+## Instalando JSON Web Token (gerar tokens para o flask-mail)
+
+```zsh
+$ pip3 install pyjwt
+```
