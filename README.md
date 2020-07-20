@@ -116,5 +116,35 @@ $ pip3 install flask-bootstrap
 ## Instalando a extensão Flask-Moment (Tratamento Data - Moment.js)
 
 ```zsh
-pip3 install flask-moment
+$ pip3 install flask-moment
+```
+
+## Instalando a extensão Flask-Babel (Internacionalização e Localização)
+
+```zsh
+$ pip3 install flask-babel
+```
+
+## Extraindo os textos para tradução
+
+```zsh
+$ pybabel extract -F babel.cfg -k _l -o messages.pot .
+```
+
+## Gerando o catálogo do idioma para tradução
+
+```zsh
+$ pybabel init -i messages.pot -d app/translations -l pt
+```
+
+## Atualizando o catálogo do idioma para tradução
+
+```zsh
+$ pybabel update -i messages.pot -d app/translations
+```
+
+## Compilando o catálagos de idiomas
+
+```zsh
+$ pybabel compile -d app/translations
 ```
