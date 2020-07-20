@@ -106,3 +106,9 @@ $ pip3 install flask-mail
 ```zsh
 $ pip3 install pyjwt
 ```
+
+## Instalando a extensão Flask-Bootstrap
+
+```zsh
+$ pip3 install flask-bootstrap
+```
