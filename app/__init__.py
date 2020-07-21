@@ -29,6 +29,9 @@ app.register_blueprint(erros_bp)
 from app.auth import bp as auth_bp
 app.register_blueprint(auth_bp, url_prefix='/auth')
 
+from app.main import bp as main_bp
+app.register_blueprint(main_bp)
+
 if not app.debug:
     # MAIL LOG
     if app.config['MAIL_SERVER']:
@@ -63,4 +66,4 @@ if not app.debug:
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
-from app import routes, models
+from app import models
