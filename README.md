@@ -148,3 +148,15 @@ $ pybabel update -i messages.pot -d app/translations
 ```zsh
 $ pybabel compile -d app/translations
 ```
+
+## Instalando biblioteca para reconhecimento de idioma
+
+```zsh
+$ pip3 install guess_language-spirit
+```
+
+## Instalando biblioteca para HTTP requests
+
+```zsh
+$ pip3 install requests
+```
