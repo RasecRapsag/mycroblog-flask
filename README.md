@@ -160,3 +160,10 @@ $ pip3 install guess_language-spirit
 ```zsh
 $ pip3 install requests
 ```
+
+## Gerando/Carregando arquivo de requisitos da aplicação
+
+```zsh
+$ pip3 freeze > requirements.txt
+$ pip3 install -r requirements.txt
+```
