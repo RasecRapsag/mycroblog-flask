@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-21 19:05-0300\n"
+"POT-Creation-Date: 2020-07-22 21:01-0300\n"
 "PO-Revision-Date: 2020-07-20 18:00-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/__init__.py:20
+#: app/__init__.py:19
 msgid "Please log in to access this page."
 msgstr "Faça login para acessar esta página."
 
@@ -34,7 +34,7 @@ msgstr "Erro: o serviço de tradução falhou."
 msgid "[Mycroblog] Reset Your Password"
 msgstr "[Mycroblog] Redefinir sua senha"
 
-#: app/auth/forms.py:8 app/auth/forms.py:14 app/main/forms.py:8
+#: app/auth/forms.py:8 app/auth/forms.py:14 app/main/forms.py:9
 msgid "Username"
 msgstr "Usuário"
 
@@ -63,7 +63,7 @@ msgstr "Repita a senha"
 msgid "Register"
 msgstr "Registro"
 
-#: app/auth/forms.py:23 app/main/forms.py:20
+#: app/auth/forms.py:23 app/main/forms.py:21
 msgid "Please use a different username."
 msgstr "Por favor, use um nome de usuário diferente."
 
@@ -95,54 +95,58 @@ msgstr "Redefinir senha"
 msgid "Your password has been reset."
 msgstr "Sua senha foi alterada."
 
-#: app/main/forms.py:9
+#: app/main/forms.py:10
 msgid "About me"
 msgstr "Sobre"
 
-#: app/main/forms.py:10 app/main/forms.py:23 app/main/forms.py:30
+#: app/main/forms.py:11 app/main/forms.py:24 app/main/forms.py:31
 msgid "Submit"
 msgstr "Enviar"
 
-#: app/main/forms.py:26
+#: app/main/forms.py:27
 msgid "Say something"
 msgstr "Diga algo"
 
-#: app/main/routes.py:31
+#: app/main/forms.py:34 app/main/routes.py:163
+msgid "Search"
+msgstr "Pesquisa"
+
+#: app/main/routes.py:32
 msgid "Your post is now live!"
 msgstr "Sua postagem agora está ativa!"
 
-#: app/main/routes.py:41 app/templates/base.html:23
+#: app/main/routes.py:42 app/templates/base.html:23
 msgid "Home"
 msgstr "Home"
 
-#: app/main/routes.py:76
+#: app/main/routes.py:77
 msgid "Your changes have been saved."
 msgstr "Suas alterações foram salvas."
 
-#: app/main/routes.py:81 app/templates/edit_profile.html:5
+#: app/main/routes.py:82 app/templates/edit_profile.html:5
 msgid "Edit Profile"
 msgstr "Editar Perfil"
 
-#: app/main/routes.py:90 app/main/routes.py:109
+#: app/main/routes.py:91 app/main/routes.py:110
 #, python-format
 msgid "User %(username)s not found."
 msgstr "Usuário %(username)s não encontrado."
 
-#: app/main/routes.py:93
+#: app/main/routes.py:94
 msgid "You cannot follow yourself!"
 msgstr "Você não pode seguir a si mesmo!"
 
-#: app/main/routes.py:97
+#: app/main/routes.py:98
 #, python-format
 msgid "You are following %(username)s!"
 msgstr "Você está seguindo %(username)s!"
 
-#: app/main/routes.py:116
+#: app/main/routes.py:117
 #, python-format
 msgid "You are not following %(username)s"
 msgstr "Você não está seguindo %(username)s"
 
-#: app/main/routes.py:132 app/templates/base.html:25
+#: app/main/routes.py:133 app/templates/base.html:25
 msgid "Explore"
 msgstr "Explorar"
 
@@ -159,19 +163,19 @@ msgstr "Traduzir"
 msgid "Welcome to Mycroblog"
 msgstr "Bem-vindo ao Mycroblog"
 
-#: app/templates/base.html:30
+#: app/templates/base.html:37
 msgid "Login"
 msgstr "Entrar"
 
-#: app/templates/base.html:32
+#: app/templates/base.html:39
 msgid "Profile"
 msgstr "Perfil"
 
-#: app/templates/base.html:33
+#: app/templates/base.html:40
 msgid "Logout"
 msgstr "Sair"
 
-#: app/templates/base.html:70
+#: app/templates/base.html:77
 msgid "Error: Could not contact server."
 msgstr "Erro: não foi possível entrar em contato com o servidor."
 
@@ -187,6 +191,18 @@ msgstr "Postagens recentes"
 #: app/templates/index.html:22 app/templates/user.html:46
 msgid "Older posts"
 msgstr "Postagens antigas"
+
+#: app/templates/search.html:4
+msgid "Search Results"
+msgstr "Resultado da Pesquisa"
+
+#: app/templates/search.html:13
+msgid "Previous results"
+msgstr "Resultados anteriores"
+
+#: app/templates/search.html:18
+msgid "Next results"
+msgstr "Próximos resultados"
 
 #: app/templates/user.html:8
 msgid "User"

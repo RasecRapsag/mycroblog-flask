@@ -167,3 +167,9 @@ $ pip3 install requests
 $ pip3 freeze > requirements.txt
 $ pip3 install -r requirements.txt
 ```
+
+## Instalando biblioteca para trabalhar com Elasticsearch
+
+```zsh
+$ pip3 install elasticsearch
+```
