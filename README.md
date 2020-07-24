@@ -173,3 +173,123 @@ $ pip3 install -r requirements.txt
 ```zsh
 $ pip3 install elasticsearch
 ```
+
+## Fazendo o deploy num servidor Linux (Ubuntu)
+
+```zsh
+# Instalando pacotes necessários
+$ sudo apt -y update
+$ sudo apt -y install python3 python3-venv python3-dev
+$ sudo apt -y install mysql-server postfix supervisor nginx git
+
+# Configurando banco de dados
+$ sudo mysql -u root -p
+
+mysql> SET GLOBAL validate_password_policy=LOW;
+mysql> SET GLOBAL validate_password_length = 6;
+mysql> SET GLOBAL validate_password_number_count = 0;
+mysql> CREATE DATABASE mycroblog CHARACTER SET utf8 COLLATE utf8_bin;
+mysql> CREATE USER 'mycroblog'@'localhost' IDENTIFIED BY '123456';
+mysql> GRANT ALL PRIVILEGES ON mycroblog.* TO 'mycroblog'@'localhost';
+mysql> FLUSH PRIVILEGES;
+mysql> QUIT;
+
+# Criando ambiente virtual para a aplicação
+$ git clone https://github.com/RasecRapsag/mycroblog-flask mycroblog
+$ cd mycroblog
+$ python3 -m venv venv
+$ source venv/bin/activate
+(venv) $ pip install -r requirements.txt
+
+# Configurando a aplicação
+(venv) $ pip install gunicorn pymysql
+(venv) $ cp .env.example .env
+(venv) $ python3 -c "import uuid; print(uuid.uuid4().hex)" # SECRET_KEY
+(venv) $ vim .env
+
+    SECRET_KEY=6c844fea0be6496b8daa6d2a407d371f
+    DATABASE_URL=mysql+pymysql://mycroblog:123456@localhost:3306/mycroblog
+    MAIL_SERVER=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USE_TLS=None
+    MAIL_USERNAME=None
+    MAIL_PASSWORD=None
+    MS_TRANSLATOR_KEY=None
+    ELASTICSEARCH_URL=None
+
+(venv) $ vim .flaskenv
+
+    FLASK_APP=mycroblog.py
+    FLASK_ENV=prodution
+    FLASK_DEBUG=0
+
+(venv) $ flask db upgrade
+(venv) $ flask translate compile
+
+# Configurando o supervisor para aplicação
+(venv) $ sudo vim /etc/supervisor/conf.d/microblog.conf
+
+[program:mycroblog]
+command=/home/ubuntu/mycroblog/venv/bin/gunicorn -b localhost:8000 -w 4 mycroblog:app
+directory=/home/ubuntu/mycroblog
+user=ubuntu
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+
+(venv) $ sudo supervisorctl reload
+
+# Configurando o NGINX
+(venv) $ mkdir certs
+(venv) $ openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout certs/key.pem -out certs/cert.pem
+(venv) $ sudo rm /etc/nginx/sites-enabled/default
+(venv) $ sudo vim /etc/nginx/sites-enabled/mycroblog
+
+server {
+    # listen on port 80 (http)
+    listen 80;
+    server_name _;
+    location / {
+        # redirect any requests to the same URL but on https
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    # listen on port 443 (https)
+    listen 443 ssl;
+    server_name _;
+
+    # location of the self-signed SSL certificate
+    ssl_certificate /home/ubuntu/mycroblog/certs/cert.pem;
+    ssl_certificate_key /home/ubuntu/mycroblog/certs/key.pem;
+
+    # write access and error logs to /var/log
+    access_log /var/log/mycroblog_access.log;
+    error_log /var/log/mycroblog_error.log;
+
+    location / {
+        # forward application requests to the gunicorn server
+        proxy_pass http://localhost:8000;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static {
+        # handle static files directly, without forwarding to the application
+        alias /home/ubuntu/mycroblog/app/static;
+        expires 30d;
+    }
+}
+
+(venv) $ sudo systemctl reload nginx
+
+# Deploy de updates na aplicação
+(venv) $ git pull
+(venv) $ sudo supervisorctl stop mycroblog
+(venv) $ flask db upgrade
+(venv) $ flask translate compile
+(venv) $ sudo supervisorctl start mycroblog
+```
