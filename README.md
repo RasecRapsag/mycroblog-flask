@@ -293,3 +293,10 @@ server {
 (venv) $ flask translate compile
 (venv) $ sudo supervisorctl start mycroblog
 ```
+
+## Fazendo o deploy no Heroku
+
+```zsh
+$ 
+
+```
