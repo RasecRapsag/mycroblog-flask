@@ -5,6 +5,8 @@
         "venv/": true,
         "**/__pycache__/": true,
 		"*.db": true,
+		"**/.vagrant": true,
+		"**/vagrant/*.log": true,
 		".directory": true
     }
 }

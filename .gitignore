@@ -7,4 +7,6 @@ logs/
 messages.pot
 *.mo
 .env
+.vagrant
+vagrant/*.log
 
