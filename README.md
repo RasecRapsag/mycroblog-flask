@@ -297,6 +297,23 @@ server {
 ## Fazendo o deploy no Heroku
 
 ```zsh
-$ 
+# Criando a aplicação no Heroku
+$ heroku login
+$ heroku apps:create flask-mycroblog
+$ git remote -v
 
+# Adicionando Postgres ao Heroku
+$ heroku addons:add heroku-postgresql:hobby-dev
+
+# Setando a variável dos logs
+$ heroku config:set LOG_TO_STDOUT=1
+
+# Setando a variável FLASK_APP
+$ heroku config:set FLASK_APP=mycroblog.py
+
+# Fazendo o deploy
+$ git push heroku master
+
+# Remover aplicação
+$ heroku apps:destroy flask-mycroblog
 ```
