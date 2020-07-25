@@ -317,3 +317,31 @@ $ git push heroku master
 # Remover aplicação
 $ heroku apps:destroy flask-mycroblog
 ```
+
+## Fazendo o deploy no Docker
+
+```zsh
+# Criando a imagem docker
+$ docker build -t mycroblog:latest .
+
+# Criando um container com Mysql
+$ docker run --name mysql -d -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
+    -e MYSQL_DATABASE=mycroblog -e MYSQL_USER=mycroblog \
+    -e MYSQL_PASSWORD=mycroblog \
+    mysql/mysql-server:5.7
+
+# Criando um container com Elasticsearch
+$ docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 --rm \
+    -e "discovery.type=single-node" \
+    docker.elastic.co/elasticsearch/elasticsearch-oss:7.8.0
+
+# Criando um container com o Mycroblog
+$ docker run --name mycroblog -d -p 8000:5000 --rm -e SECRET_KEY=6c844fea0be6496b8daa6d2a407d371f \
+    -e MAIL_SERVER=smtp.mailtrap.io -e MAIL_PORT=587 -e MAIL_USE_TLS=true \
+    -e MAIL_USERNAME=username -e MAIL_PASSWORD=senha \
+    --link mysql:db \
+    -e DATABASE_URL=mysql+pymysql://mycroblog:mycroblog@db/mycroblog \
+    --link elasticsearch:elasticsearch \
+    -e ELASTICSEARCH_URL=http://elasticsearch:9200 \
+    mycroblog:latest
+```
