@@ -9,4 +9,4 @@ messages.pot
 .env
 .vagrant
 vagrant/*.log
-
+data/
