@@ -238,6 +238,18 @@ autorestart=true
 stopasgroup=true
 killasgroup=true
 
+# Configurando o supervisor para worker do redis queue
+(venv) $ sudo vim /etc/supervisor/conf.d/rq.conf
+
+[program:rq]
+command=rq worker mycroblog-tasks
+directory=/home/ubuntu/mycroblog
+user=ubuntu
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+
 (venv) $ sudo supervisorctl reload
 
 # Configurando o NGINX
@@ -305,6 +317,9 @@ $ git remote -v
 # Adicionando Postgres ao Heroku
 $ heroku addons:add heroku-postgresql:hobby-dev
 
+# Adicionando Redis ao Heroku
+$ heroku addons:create heroku-redis:hobby-dev
+
 # Setando a variável dos logs
 $ heroku config:set LOG_TO_STDOUT=1
 
@@ -313,6 +328,9 @@ $ heroku config:set FLASK_APP=mycroblog.py
 
 # Fazendo o deploy
 $ git push heroku master
+
+# Iniciar Worker task
+$ heroku ps:scale worker=1
 
 # Remover aplicação
 $ heroku apps:destroy flask-mycroblog
@@ -335,6 +353,9 @@ $ docker run --name elasticsearch -d -p 9200:9200 -p 9300:9300 --rm \
     -e "discovery.type=single-node" \
     docker.elastic.co/elasticsearch/elasticsearch-oss:7.8.0
 
+# Criando um container com Redis
+$ docker run --name redis -d -p 6379:6379 redis:3-alpine
+
 # Criando um container com o Mycroblog
 $ docker run --name mycroblog -d -p 8000:5000 --rm -e SECRET_KEY=6c844fea0be6496b8daa6d2a407d371f \
     -e MAIL_SERVER=smtp.mailtrap.io -e MAIL_PORT=587 -e MAIL_USE_TLS=true \
@@ -343,5 +364,22 @@ $ docker run --name mycroblog -d -p 8000:5000 --rm -e SECRET_KEY=6c844fea0be6496
     -e DATABASE_URL=mysql+pymysql://mycroblog:mycroblog@db/mycroblog \
     --link elasticsearch:elasticsearch \
     -e ELASTICSEARCH_URL=http://elasticsearch:9200 \
+    -e REDIS_URL=redis://redis-server:6379/0 \
     mycroblog:latest
+
+# Iniciando um Worker do Radius Queue
+$ docker run --name rq-worker -d --rm -e SECRET_KEY=6c844fea0be6496b8daa6d2a407d371f \
+    -e MAIL_SERVER=smtp.mailtrap.io -e MAIL_PORT=587 -e MAIL_USE_TLS=true \
+    -e MAIL_USERNAME=username -e MAIL_PASSWORD=senha \
+    --link mysql:db --link redis:redis-server \
+    -e DATABASE_URL=mysql+pymysql://mycroblog:mycroblog@db/mycroblog \
+    -e REDIS_URL=redis://redis-server:6379/0 \
+    --entrypoint venv/bin/rq \
+    mycroblog:latest worker -u redis://redis-server:6379/0 mycroblog-tasks
+```
+
+# Instalando o RQ (Redis Queue)
+
+```zsh
+$ pip3 install rq
 ```

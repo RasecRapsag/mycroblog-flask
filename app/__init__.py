@@ -10,6 +10,8 @@ from flask_babel import Babel, lazy_gettext as _l
 import logging, os
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from elasticsearch import Elasticsearch
+from redis import Redis
+import rq
 
 
 db = SQLAlchemy()
@@ -33,6 +35,10 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+        if app.config['ELASTICSEARCH_URL'] else None
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.task_queue = rq.Queue('mycroblog-tasks', connection=app.redis)
 
     from app.errors import bp as erros_bp
     app.register_blueprint(erros_bp)
@@ -42,9 +48,6 @@ def create_app(config_class=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
-
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
-        if app.config['ELASTICSEARCH_URL'] else None
 
     if not app.debug and not app.testing:
         # MAIL LOG
@@ -58,7 +61,7 @@ def create_app(config_class=Config):
             mail_handler = SMTPHandler(
                 mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
                 fromaddr='no-reply@' + app.config['MAIL_SERVER'],
-                toaddrs=app.config['ADMINS'], subject='Microblog Failure',
+                toaddrs=app.config['ADMINS'], subject='Mycroblog Failure',
                 credentials=auth, secure=secure)
             mail_handler.setLevel(logging.ERROR)
             app.logger.addHandler(mail_handler)
