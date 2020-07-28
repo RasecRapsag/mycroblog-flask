@@ -383,3 +383,36 @@ $ docker run --name rq-worker -d --rm -e SECRET_KEY=6c844fea0be6496b8daa6d2a407d
 ```zsh
 $ pip3 install rq
 ```
+
+# Instalando httpie (Cliente http de linha de comando)
+
+```zsh
+$ pip3 install httpie
+
+$ http GET http://127.0.0.1:5000/api/users/1
+
+$ http POST http://127.0.1:5000/api/users username=glorfindel password=123456 email=glorfindel@middle.earth "about_me=Hello, my name is Glorfindel! "
+
+http PUT http://127.0.0.1:5000/api/users/24 "about_me=They forgot me in the movie!!! "
+```
+
+# Instalando a extensão Flask-HTTPAuth (Interação cliente servidor - autenticação)
+
+```zsh
+$ pip3 install flask-httpauth
+```
+
+# Fazendo autenticação via api
+
+```zsh
+# Fazendo a autenticação
+$ http --auth <username>:<password> POST http://localhost:5000/api/tokens
+
+# Acessando api passando o token
+$ http GET http://localhost:5000/api/users/1 \
+    "Authorization:Bearer UNDBnKuQZrlugoflgvxGwRauE4vZ/kvU"
+
+# Revogando o token de acesso
+$ http DELETE http://localhost:5000/api/tokens \
+    Authorization:"Bearer UNDBnKuQZrlugoflgvxGwRauE4vZ/kvU"
+```
