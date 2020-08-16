@@ -15,7 +15,7 @@ $ python3 -m venv venv
 ## Ativando o Ambiente Virtual
 
 ```zsh
-$ source venv/bin/active
+$ source venv/bin/activate
 ```
 
 ## Instalando o Flask
